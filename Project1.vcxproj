@@ -157,10 +157,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="fir.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Project1.cpp" />
+    <ClCompile Include="tb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fir.h" />
+    <ClInclude Include="tb.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -29,7 +29,7 @@ void fir::fir_main(void)
 			val +=2 * taps[i];
 		}
 
-		outp.write(val);
+		outp.write(val); // zapisanie wartosci na wyjscie
 		wait(); //czeka na zegar
 
 	}
