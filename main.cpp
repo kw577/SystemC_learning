@@ -12,8 +12,14 @@ SC_MODULE(SYSTEM) {
 
 	//Local signal declarations - do komunikacji miedzy modulem tb0 (testbench) i fir0
 	sc_signal<bool> rst_sig;
+
 	sc_signal< sc_int<16> >		inp_sig;
+	sc_signal<bool>				inp_sig_vld;  //handshaking signal
+	sc_signal<bool>				inp_sig_rdy;  //handshaking signal
+
 	sc_signal< sc_int<16> >		outp_sig;
+	sc_signal<bool>				outp_sig_vld;  //handshaking signal
+	sc_signal<bool>				outp_sig_rdy;  //handshaking signal
 
 	//ZEGAR SYSTEMOWY
 	sc_clock clk_sig;
@@ -30,7 +36,11 @@ SC_MODULE(SYSTEM) {
 		//polaczenie modulu z sygnalami
 		tb0->rst(rst_sig);
 		tb0->inp(inp_sig);
+		tb0->inp_vld(inp_sig_vld); //handshaking signal
+		tb0->inp_rdy(inp_sig_rdy); //handshaking signal
 		tb0->outp(outp_sig);
+		tb0->outp_vld(outp_sig_vld); //handshaking signal
+		tb0->outp_rdy(outp_sig_rdy); //handshaking signal
 
 
 		//////////////////////////////////////
@@ -43,8 +53,11 @@ SC_MODULE(SYSTEM) {
 		//polaczenie modulu z sygnalami
 		fir0->rst(rst_sig);
 		fir0->inp(inp_sig);
+		fir0->inp_vld(inp_sig_vld); //handshaking signal
+		fir0->inp_rdy(inp_sig_rdy); //handshaking signal
 		fir0->outp(outp_sig);
-
+		fir0->outp_vld(outp_sig_vld); //handshaking signal
+		fir0->outp_rdy(outp_sig_rdy); //handshaking signal
 
 	}
 

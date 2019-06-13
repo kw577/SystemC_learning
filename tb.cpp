@@ -5,6 +5,7 @@ void tb::source() {
 
 	//resetowanie wejsc i wyjsc
 	inp.write(0);
+	inp_vld.write(0);
 	rst.write(1);
 	wait(); //czeka do nastepnego cyklu zegara
 	rst.write(0); //do resetu nalezy najpierw wyslac 1 potem 0 - dopiero wtedy sygnal reset jest zakonczony
@@ -21,12 +22,19 @@ void tb::source() {
 		else
 			tmp = 0;
 
+		inp_vld.write(1);
+
 		//zapis sygnalu do wyjscia - polaczonego sygnalem z wejsciem modulu fir o nazwie inp
 		inp.write(tmp); 
 
-		//czeka do kolejnego cyklu zegara
-		wait();
+		
 
+		//czeka na sygnal handshake
+		do {
+			wait();
+		} while (!inp_rdy.read());
+
+		inp_vld.write(0);
 	}
 
 
@@ -38,20 +46,45 @@ void tb::sink() {
 
 	sc_int<16> indata;
 
+	/*
+	char output_file[256];
+	sprintf(output_file, "./output.dat");
+	outfp = fopen(output_file, "wb");
+	if(outfp == NULL)
+	{
+		printf("Couldn't open output.dat for writting.\n");
+		exit(0);
+	}
+
+	*/
+
+	//Initialize handshake port
+	outp_rdy.write(0);
+
+
 	//funckja source wysyla 64 sygnaly zatem funkcja sink powinna odebrac rowniez 64 sygnaly
 	for (int i = 0; i < 64; i++) {
 
+		outp_rdy.write(1);
+		do {
+			wait();
+		} while (!outp_vld.read());
+
 		//czyta odpowiedz od modulu fir
 		indata = outp.read();
-		wait();
+
+		outp_rdy.write(0);
+		//wait();
 
 		//zapisanie wynikow
-		cout << i << " : \t" << indata.to_int << endl;
+		//fprintf(outfp, "%g\n", indata.to_double());
+		cout << i << " : \t" << indata.to_double << endl;
 
 
 	}
 
 	//zakonczenie symulacji i uruchomienie destruktorow modulow
+	//fclose(outfp)
 	sc_stop();
 
 }

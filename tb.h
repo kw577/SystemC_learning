@@ -10,6 +10,12 @@ SC_MODULE(tb)
 	sc_out< sc_int<16> > inp; //inp jest zadeklarowany w fih.h jako sc_in
 	sc_in< sc_int<16> > outp; //outp jest zadeklarowany w fih.h jako sc_out
 
+	//handshaking
+	sc_out<bool> inp_vld;
+	sc_in<bool> inp_rdy;
+	sc_in<bool> outp_vld;
+	sc_out<bool> outp_rdy;
+
 	//funkcja produkujaca wartosci ktore zostana nastepnie wyslane do modulu fir
 	void source();
 
