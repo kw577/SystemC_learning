@@ -22,6 +22,9 @@ SC_MODULE(tb)
 	//Funkcja odbierajaca wartosci z modulu fir
 	void sink();
 
+
+	FILE* outfp;
+
 	//konstruktor
 	SC_CTOR(tb) {
 

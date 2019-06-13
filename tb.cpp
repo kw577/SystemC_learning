@@ -37,6 +37,10 @@ void tb::source() {
 		inp_vld.write(0);
 	}
 
+	//zapobieganie zawieszania sie procesu symulacji
+	wait(10000);
+	printf("Hanging simulation stopped by TB source thread.\n");
+	sc_stop();
 
 }
 
@@ -46,7 +50,8 @@ void tb::sink() {
 
 	sc_int<16> indata;
 
-	/*
+	///////////////
+	//Zapisanie danych symulacji do pliku
 	char output_file[256];
 	sprintf(output_file, "./output.dat");
 	outfp = fopen(output_file, "wb");
@@ -55,8 +60,8 @@ void tb::sink() {
 		printf("Couldn't open output.dat for writting.\n");
 		exit(0);
 	}
-
-	*/
+	///////////////
+	
 
 	//Initialize handshake port
 	outp_rdy.write(0);
@@ -77,14 +82,14 @@ void tb::sink() {
 		//wait();
 
 		//zapisanie wynikow
-		//fprintf(outfp, "%g\n", indata.to_double());
-		cout << i << " : \t" << indata.to_double << endl;
+		fprintf(outfp, "%d\n", indata.to_int());
+		cout << i << " : \t" << indata.to_int << endl;
 
 
 	}
 
 	//zakonczenie symulacji i uruchomienie destruktorow modulow
-	//fclose(outfp)
+	fclose(outfp);
 	sc_stop();
 
 }
